@@ -10,7 +10,9 @@
 
 Simulator::Simulator(QWidget* parent) : QMainWindow(parent)
 {
+    // Set up the user interface
 	setupUi();
+    // Connect button clicks to corresponding functions
 	connect(mStartButton, &QPushButton::clicked, this, &Simulator::startBtn);
 	connect(mStopButton, &QPushButton::clicked, this, &Simulator::stopBtn);
 	connect(mResetButton, &QPushButton::clicked, this, &Simulator::resetBtn);
@@ -26,12 +28,17 @@ Simulator::~Simulator()
 void Simulator::setupUi()
 {
     resize(1200, 900);
+
+    // Create the central widget
     mWidget = new QWidget(this);
     setCentralWidget(mWidget);
 
+    // Create buttons for Start, Stop, and Reset
     mStartButton = new QPushButton("Start", mWidget);
     mStopButton = new QPushButton("Stop", mWidget);
     mResetButton = new QPushButton("Reset", mWidget);
+
+    // Create an OpenGL rendering window
     mRenderer = new OpenGLWindow(QColor(0, 0, 0), mWidget);
 
     mRenderer->setGeometry(10, 50, 1000, 800);
@@ -70,6 +77,7 @@ void Simulator::setupUi()
     label->setObjectName("label");
     label->setGeometry( 60, 10, 221, 31);
 
+    // Set font and text for the title label
     QFont font;
     font.setPointSize(15);
     label->setFont(font);
@@ -78,31 +86,37 @@ void Simulator::setupUi()
     setWindowTitle(QCoreApplication::translate("Simulator", "Simulator", nullptr));
 }
 
+// Start button click event handler
 void Simulator::startBtn()
 {
 	mRenderer->startRendering(mVelocity, mSize, mAltitude);
 }
 
+// Stop button
 void Simulator::stopBtn()
 {
 	mRenderer->stopRevolving();
 }
 
+// Reset button
 void Simulator::resetBtn()
 {
 	mRenderer->resetPositions();
 }
 
+// Handler for adding velocity from the input field
 void Simulator::addVelocity()
 {
     mVelocity = speedInput->value();
 }
 
+// Handler for adding altitude from the input field
 void Simulator::addAltitude()
 {
     mAltitude = altitudeInput->value();
 }
 
+// Handler for adding size from the input field
 void Simulator::addSize()
 {
     mSize = sizeInput->value();
