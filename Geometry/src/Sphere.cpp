@@ -14,11 +14,11 @@ void Sphere::drawSphere(std::vector<float>& mVertices, std::vector<float>& mColo
 {
 	for (int i = 0; i < 180; i++) //PHI - angle around x-axis
 	{
-		float phi = float(i) * 3.1415926f / 180.0f;
+		float phi = float(i) * PI / 180.0f;
 
 		for (int j = 0; j < 360; j++) //THETA - angle around z-axis
 		{
-			float theta = 3.1415926f * float(j) / 180.0f;			
+			float theta = PI * float(j) / 180.0f;			
 			float x = radius * sinf(theta) * cosf(phi);
 			float y = radius * sinf(theta) * sinf(phi);
 			float z = radius * cosf(theta);
