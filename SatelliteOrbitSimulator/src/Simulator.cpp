@@ -16,9 +16,9 @@ Simulator::Simulator(QWidget* parent) : QMainWindow(parent)
 	connect(mStartButton, &QPushButton::clicked, this, &Simulator::startBtn);
 	connect(mStopButton, &QPushButton::clicked, this, &Simulator::stopBtn);
 	connect(mResetButton, &QPushButton::clicked, this, &Simulator::resetBtn);
-    connect(speedButton, &QPushButton::clicked, this, &Simulator::addVelocity);
-    connect(altitudeButton, &QPushButton::clicked, this, &Simulator::addAltitude);
-    connect(sizeButton, &QPushButton::clicked, this, &Simulator::addSize);
+    connect(mSpeedButton, &QPushButton::clicked, this, &Simulator::addVelocity);
+    connect(mAltitudeButton, &QPushButton::clicked, this, &Simulator::addAltitude);
+    connect(mSizeButton, &QPushButton::clicked, this, &Simulator::addSize);
 }
 
 Simulator::~Simulator()
@@ -49,39 +49,39 @@ void Simulator::setupUi()
     mStopButton->setGeometry(rightSideX, 250, 75, 24);
     mResetButton->setGeometry(rightSideX, 290, 75, 24);
 
-    speedButton = new QPushButton("Speed", mWidget);
-    speedButton->setObjectName("speedButton");
-    speedButton->setGeometry(rightSideX + 80, 90, 75, 24);
+    mSpeedButton = new QPushButton("Speed", mWidget);
+    mSpeedButton->setObjectName("mSpeedButton");
+    mSpeedButton->setGeometry(rightSideX + 80, 90, 75, 24);
 
-    altitudeButton = new QPushButton("Altitude", mWidget);
-    altitudeButton->setObjectName("altitudeButton");
-    altitudeButton->setGeometry(rightSideX + 80, 130, 75, 24);
+    mAltitudeButton = new QPushButton("Altitude", mWidget);
+    mAltitudeButton->setObjectName("mAltitudeButton");
+    mAltitudeButton->setGeometry(rightSideX + 80, 130, 75, 24);
 
-    sizeButton = new QPushButton("Size", mWidget);
-    sizeButton->setObjectName("sizeButton");
-    sizeButton->setGeometry(rightSideX + 80, 170, 75, 24);
+    mSizeButton = new QPushButton("Size", mWidget);
+    mSizeButton->setObjectName("mSizeButton");
+    mSizeButton->setGeometry(rightSideX + 80, 170, 75, 24);
 
-    speedInput = new QDoubleSpinBox(mWidget);
-    speedInput->setObjectName("speedInput");
-    speedInput->setGeometry(rightSideX , 90, 75, 24);
+    mSpeedInput = new QDoubleSpinBox(mWidget);
+    mSpeedInput->setObjectName("mSpeedInput");
+    mSpeedInput->setGeometry(rightSideX , 90, 75, 24);
 
-    altitudeInput = new QDoubleSpinBox(mWidget);
-    altitudeInput->setObjectName("altitudeInput");
-    altitudeInput->setGeometry(rightSideX , 130, 75, 24);
+    mAltitudeInput = new QDoubleSpinBox(mWidget);
+    mAltitudeInput->setObjectName("mAltitudeInput");
+    mAltitudeInput->setGeometry(rightSideX , 130, 75, 24);
 
-    sizeInput = new QDoubleSpinBox(mWidget);
-    sizeInput->setObjectName("sizeInput");
-    sizeInput->setGeometry(rightSideX , 170, 75, 24);
+    mSizeInput = new QDoubleSpinBox(mWidget);
+    mSizeInput->setObjectName("mSizeInput");
+    mSizeInput->setGeometry(rightSideX , 170, 75, 24);
 
-    label = new QLabel(mWidget);
-    label->setObjectName("label");
-    label->setGeometry( 60, 10, 221, 31);
+    mLabel = new QLabel(mWidget);
+    mLabel->setObjectName("mLabel");
+    mLabel->setGeometry( 60, 10, 221, 31);
 
-    // Set font and text for the title label
+    // Set font and text for the title mLabel
     QFont font;
     font.setPointSize(15);
-    label->setFont(font);
-    label->setText("Satellite Orbit Simulator");
+    mLabel->setFont(font);
+    mLabel->setText("Satellite Orbit Simulator");
 
     setWindowTitle(QCoreApplication::translate("Simulator", "Simulator", nullptr));
 }
@@ -107,17 +107,17 @@ void Simulator::resetBtn()
 // Handler for adding velocity from the input field
 void Simulator::addVelocity()
 {
-    mVelocity = speedInput->value();
+    mVelocity = mSpeedInput->value();
 }
 
 // Handler for adding altitude from the input field
 void Simulator::addAltitude()
 {
-    mAltitude = altitudeInput->value();
+    mAltitude = mAltitudeInput->value();
 }
 
 // Handler for adding size from the input field
 void Simulator::addSize()
 {
-    mSize = sizeInput->value();
+    mSize = mSizeInput->value();
 }
