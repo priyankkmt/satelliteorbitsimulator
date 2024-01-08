@@ -36,7 +36,7 @@ private:
     QTimer* mTimer;
     QWidget* mWidget;
 
-    EarthSystem* solar;
+    EarthSystem* mSolar;
 
     OpenGLWindow* mRenderer;
 
