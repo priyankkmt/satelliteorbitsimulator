@@ -18,29 +18,20 @@ public:
 private:
     void setupUi();
 
-private slots:
-    void startBtn();
-    void stopBtn();
-    void resetBtn();
-    void addVelocity();
-    void addAltitude();
-    void addSize();
-
 private:          
-
     QPushButton* mStartButton;
     QPushButton* mStopButton;
     QPushButton* mResetButton;
 
-    QPushButton* speedButton;
-    QPushButton* altitudeButton;
-    QPushButton* sizeButton;
+    QPushButton* mSpeedButton;
+    QPushButton* mAltitudeButton;
+    QPushButton* mSizeButton;
 
-    QDoubleSpinBox* speedInput;
-    QDoubleSpinBox* altitudeInput;
-    QDoubleSpinBox* sizeInput;
+    QDoubleSpinBox* mSpeedInput;
+    QDoubleSpinBox* mAltitudeInput;
+    QDoubleSpinBox* mSizeInput;
 
-    QLabel* label;
+    QLabel* mLabel;
 
     QTimer* mTimer;
     QWidget* mWidget;
@@ -58,4 +49,12 @@ private:
 
     QVector<GLfloat> ver;
     QVector<GLfloat> col;
+
+private slots:
+    void startBtn();
+    void stopBtn();
+    void resetBtn();
+    void addVelocity();
+    void addAltitude();
+    void addSize();
 };
