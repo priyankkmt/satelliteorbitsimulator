@@ -20,12 +20,14 @@ OpenGLWindow::OpenGLWindow (const QColor& background, QWidget* parent) : mBackgr
     solar = new EarthSystem();
 	timer = new QTimer(this);
 	
+	// Set up a file watcher for shader files
 	const QStringList list = { "vShader.glsl","fShader.glsl"};
 	mShaderWatcher = new QFileSystemWatcher(list, this);
 	connect(mShaderWatcher, &QFileSystemWatcher::fileChanged, this, &OpenGLWindow::shaderWatcher);
 
 }
 
+// Update vertex and color data for rendering
 void OpenGLWindow::updateData(std::vector<float>& vertices, std::vector<float>& colors)
 {
 	mVertices.clear();
@@ -35,6 +37,7 @@ void OpenGLWindow::updateData(std::vector<float>& vertices, std::vector<float>& 
 	update();
 }
 
+// Start rendering with specified speed, size, and altitude
 void OpenGLWindow::startRendering(float& speed, float& size, float& altitude)
 {
 	solar->setSatelliteSpeed(speed);
@@ -44,7 +47,8 @@ void OpenGLWindow::startRendering(float& speed, float& size, float& altitude)
 	connect(timer, &QTimer::timeout, this, &OpenGLWindow::updateSolarSystemData);
 	timer->start(16); 
 }
-
+ 
+// Stop the rendering timer
 void OpenGLWindow::stopRendering()
 {
 	timer->stop();
@@ -55,6 +59,7 @@ OpenGLWindow::~OpenGLWindow()
 	reset();
 }
 
+// Reset OpenGL context and shader program
 void OpenGLWindow::reset()
 {
 	makeCurrent();
@@ -64,6 +69,7 @@ void OpenGLWindow::reset()
 	QObject::disconnect(mContextWatchConnection);
 }
 
+// Update solar system data and trigger rendering update
 void OpenGLWindow::updateSolarSystemData()
 {
 	mVertices.clear();
@@ -72,17 +78,20 @@ void OpenGLWindow::updateSolarSystemData()
 	update();
 }
 
+// Stop the revolving animation
 void OpenGLWindow::stopRevolving()
 {
 	timer->stop();
 }
 
+// Reset positions of planets and satellites
 void OpenGLWindow::resetPositions()
 {
 	solar->resetPositions();
 	updateSolarSystemData();
 }
 
+// Handle mouse movement to rotate the view
 void OpenGLWindow::mouseMoveEvent(QMouseEvent* event) {
 	int dx = event->x() - lastPos.x();
 	int dy = event->y() - lastPos.y();
@@ -97,6 +106,7 @@ void OpenGLWindow::mouseMoveEvent(QMouseEvent* event) {
 	lastPos = event->pos();
 }
 
+// OpenGL paint event to render the scene
 void OpenGLWindow::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -126,6 +136,7 @@ void OpenGLWindow::paintGL()
 
 }
 
+// Shader file watcher callback to reload shaders on change
 void OpenGLWindow::shaderWatcher()
 {
 	QString vertexShaderSource = readShaderSource("vShader.glsl");
@@ -140,7 +151,7 @@ void OpenGLWindow::shaderWatcher()
 	mProgram->link();
 }
 
-
+// Initialize OpenGL context and shader program
 void OpenGLWindow::initializeGL()
 {
 
@@ -175,6 +186,7 @@ void OpenGLWindow::initializeGL()
 	glClearColor(mBackground.redF(), mBackground.greenF(), mBackground.blueF(), 1.0f);
 }
 
+// Read shader source code from a file
 QString OpenGLWindow::readShaderSource(QString filePath)
 {
 
