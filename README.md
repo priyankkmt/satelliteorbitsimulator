@@ -18,7 +18,9 @@ The project has the following dependencies:
 
 ## Input
 Velocity ( Km/s ) 
+
 Altitude ( 100 Km ) ( if 10 is input then it will be multiplied by 100 and it will become 1000 Km )
+
 Size     ( m )   
 
 ## Output
