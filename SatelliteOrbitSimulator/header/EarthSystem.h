@@ -17,24 +17,22 @@ public:
 	void setSatelliteDistance(float& altitude);
 	void setSatelliteSpeed(float& speed);
 	void calculateOrbitVelocity(float& altitude);
-	const std::vector<float>& getCurrentVertices() const { return mCurrentVertices; }
-	const std::vector<float>& getCurrentColors() const { return mCurrentColors; }
 
 private:
 	void drawOrbitingSatellite(std::vector<float>& vertices, std::vector<float>& colors);
 
 private:
+	float mSatelliteRadius   = { 0.2f }; // set it to 0.2 for visualization
+	float mSatelliteDistance = { 6.371f }; // Earth's radius in Km
+	float mSatelliteAngle    = { 0.0f };
 
-	float satelliteRadius = { 0.2f };
-	float satelliteDistance = { 6.371f };
-	float satelliteAngle = { 0.0f };
+	float mOrbitVelocity;
+	float mSatelliteSpeed;
 
-	float orbitVelocity;
-	float satelliteSpeed;
-	float escapeVelocity = 11.2f; // 11.2 Km/s
-	float mAltitude = { 6.371f };
+	float mEscapeVelocity = { 11.2f }; // 11.2 Km/s for earth
+	float mAltitude       = { 6.371f };
 
-	Point3D mPlanetColors;
+	Point3D mSatelliteColor;
 
 	std::vector<float> mCurrentVertices;
 	std::vector<float> mCurrentColors;
