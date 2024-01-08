@@ -10,4 +10,7 @@ public:
 
 public:
 	void drawSphere(std::vector<float>& mVertices, std::vector<float>& mColors, float cx, float cy, float radius, Point3D circleColor);
+
+private:
+	const float PI = 3.1415926f;
 };
