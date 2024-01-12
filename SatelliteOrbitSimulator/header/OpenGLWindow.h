@@ -4,7 +4,9 @@
 #include <QOpenGLBuffer>
 #include <cmath>
 #include <QTimer>
+
 #include "EarthSystem.h"
+#include "ReadSTL.h"
 
 class QOpenGLTexture;
 class QOpenGLShader;
@@ -21,10 +23,9 @@ public:
 
     void stopRevolving();
     void resetPositions();
-    void updateSolarSystemData();
+    void updatePlanetSystemData();
     void startRendering(float& speed, float& size, float& altitude);
     void stopRendering();
-    void updateData(std::vector<float>& vertices, std::vector<float>& colors);
 
 protected:
     void paintGL() override;
@@ -35,10 +36,12 @@ private:
     QString readShaderSource(QString filePath);
     void mouseMoveEvent(QMouseEvent* event);
     void shaderWatcher();
+    void wheelEvent(QWheelEvent* event);
 
 private:
     QTimer* timer;
-    EarthSystem* solar;
+    EarthSystem* mSolarObj;
+    ReadSTL* mReadSTLObj;
 
     QOpenGLShaderProgram* mProgram = nullptr;
     QColor mBackground;
@@ -52,7 +55,12 @@ private:
     float* mVerticesData;
     float* mColorsData;
 
-    GLfloat mZoomFactor = 1.25;
+    float mZoomFactor = 1.25;
+
+    int spherePoints = 0;
+    int pathPoints = 0;
+
+    bool isReset = false;
 
     std::vector<float> mVertices;
     std::vector<float> mColors;
