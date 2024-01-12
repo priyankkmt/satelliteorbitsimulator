@@ -17,64 +17,46 @@ OpenGLWindow::OpenGLWindow (const QColor& background, QWidget* parent) : mBackgr
 	setParent(parent);
 	setMinimumSize(500, 250);
 	mZoomFactor = 1.25;
-    solar = new EarthSystem();
+    mSolarObj = new EarthSystem();
 	timer = new QTimer(this);
+
+	mReadSTLObj = new ReadSTL();
+	mReadSTLObj->readSTL(mVertices,mColors,spherePoints);
 	
 	// Set up a file watcher for shader files
 	const QStringList list = { "vShader.glsl","fShader.glsl"};
 	mShaderWatcher = new QFileSystemWatcher(list, this);
 	connect(mShaderWatcher, &QFileSystemWatcher::fileChanged, this, &OpenGLWindow::shaderWatcher);
-
-}
-
-// Update vertex and color data for rendering
-void OpenGLWindow::updateData(std::vector<float>& vertices, std::vector<float>& colors)
-{
-	mVertices.clear();
-	mColors.clear();
-	mVertices = vertices;
-	mColors = colors;
-	update();
 }
 
 // Start rendering with specified speed, size, and altitude
 void OpenGLWindow::startRendering(float& speed, float& size, float& altitude)
 {
-	solar->setSatelliteSpeed(speed);
-	solar->setSatelliteRadius(size);
-	solar->setSatelliteDistance(altitude);
-	solar->calculateOrbitVelocity(altitude);
-	connect(timer, &QTimer::timeout, this, &OpenGLWindow::updateSolarSystemData);
+	mSolarObj->setSatelliteSpeed(speed);
+	mSolarObj->setSatelliteRadius(size);
+	mSolarObj->setSatelliteDistance(altitude);
+	mSolarObj->calculateOrbitVelocity(altitude);
+	connect(timer, &QTimer::timeout, this, &OpenGLWindow::updatePlanetSystemData);
 	timer->start(16); 
 }
- 
+
 // Stop the rendering timer
 void OpenGLWindow::stopRendering()
 {
 	timer->stop();
 }
 
-OpenGLWindow::~OpenGLWindow()
+// Update mSolarObj system data and trigger rendering update
+void OpenGLWindow::updatePlanetSystemData()
 {
-	reset();
-}
-
-// Reset OpenGL context and shader program
-void OpenGLWindow::reset()
-{
-	makeCurrent();
-	delete mProgram;
-	mProgram = nullptr;
-	doneCurrent();
-	QObject::disconnect(mContextWatchConnection);
-}
-
-// Update solar system data and trigger rendering update
-void OpenGLWindow::updateSolarSystemData()
-{
-	mVertices.clear();
-	mColors.clear();
-	solar->drawPlanetSatelliteSystem(mVertices, mColors);
+	if (!isReset)
+	{
+		mVertices.erase(mVertices.begin() + spherePoints + pathPoints, mVertices.end());
+		mColors.erase(mColors.begin() + spherePoints + pathPoints, mColors.end());
+	}
+	isReset = false;
+	mSolarObj->drawOrbitingSatellite(mVertices, mColors);
+	mSolarObj->calculatePath(mVertices, mColors, pathPoints);
 	update();
 }
 
@@ -87,23 +69,13 @@ void OpenGLWindow::stopRevolving()
 // Reset positions of planets and satellites
 void OpenGLWindow::resetPositions()
 {
-	solar->resetPositions();
-	updateSolarSystemData();
-}
+	isReset = true;
+	mVertices.clear();
+	mColors.clear();
 
-// Handle mouse movement to rotate the view
-void OpenGLWindow::mouseMoveEvent(QMouseEvent* event) {
-	int dx = event->x() - lastPos.x();
-	int dy = event->y() - lastPos.y();
-
-	if (event->buttons() & Qt::LeftButton) {
-		QQuaternion rotX = QQuaternion::fromAxisAndAngle(0.0f, 1.0f, 0.0f, 0.5f * dx);
-		QQuaternion rotY = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 0.5f * dy);
-
-		rotationAngle = rotX * rotY * rotationAngle;
-		update();
-	}
-	lastPos = event->pos();
+	mReadSTLObj->readSTL(mVertices, mColors, spherePoints);
+	mSolarObj->resetPositions();
+	updatePlanetSystemData();
 }
 
 // OpenGL paint event to render the scene
@@ -113,7 +85,8 @@ void OpenGLWindow::paintGL()
 	mProgram->bind();
 
 	QMatrix4x4 matrix;
-	matrix.ortho(-16.0f , 16.0f , -16.0f , 16.0f , 0.1f, 100.0f);  // orthographic projection
+	matrix.ortho(-26.0f , 26.0f , -26.0f , 26.0f , 0.1f, 100.0f);  // orthographic projection
+	matrix.scale(mZoomFactor);
 	matrix.translate(0, 0, -2);
 	matrix.rotate(rotationAngle);
 	mProgram->setUniformValue(m_matrixUniform, matrix);
@@ -134,6 +107,45 @@ void OpenGLWindow::paintGL()
 	glDisableVertexAttribArray(m_colAttr);
 	glDisableVertexAttribArray(m_posAttr);
 
+}
+
+// Reset OpenGL context and shader program
+void OpenGLWindow::reset()
+{
+	makeCurrent();
+	delete mProgram;
+	mProgram = nullptr;
+	doneCurrent();
+	QObject::disconnect(mContextWatchConnection);
+}
+
+// Handle mouse movement to rotate the view
+void OpenGLWindow::mouseMoveEvent(QMouseEvent* event) {
+	int dx = event->x() - lastPos.x();
+	int dy = event->y() - lastPos.y();
+
+	if (event->buttons() & Qt::LeftButton) {
+		QQuaternion rotX = QQuaternion::fromAxisAndAngle(0.0f, 1.0f, 0.0f, 0.5f * dx);
+		QQuaternion rotY = QQuaternion::fromAxisAndAngle(1.0f, 0.0f, 0.0f, 0.5f * dy);
+
+		rotationAngle = rotX * rotY * rotationAngle;
+		update();
+	}
+	lastPos = event->pos();
+}
+
+void OpenGLWindow::wheelEvent(QWheelEvent* event)
+{
+	int delta = event->angleDelta().y();
+
+	if (delta > 0) {
+
+		mZoomFactor *= 1.1f;
+	}
+	else {
+		mZoomFactor /= 1.1f;
+	}
+	update();
 }
 
 // Shader file watcher callback to reload shaders on change
@@ -206,4 +218,9 @@ QString OpenGLWindow::readShaderSource(QString filePath)
 		fileString.append(stream.readLine());
 	}
 	return fileString;
+}
+
+OpenGLWindow::~OpenGLWindow()
+{
+	reset();
 }
