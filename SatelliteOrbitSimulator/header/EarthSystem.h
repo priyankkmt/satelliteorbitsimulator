@@ -2,7 +2,11 @@
 #include "OpenGLWindow.h"
 #include "Point3D.h"
 #include "Sphere.h"
+
 #include<vector>
+#include<fstream>
+#include<sstream>
+#include<iostream>
 
 class EarthSystem
 {
@@ -11,15 +15,13 @@ public:
 	~EarthSystem();
 
 public: 	
-	void drawPlanetSatelliteSystem(std::vector<float>& mVertices, std::vector<float>& mColors);
+	void drawOrbitingSatellite(std::vector<float>& vertices, std::vector<float>& colors);
 	void resetPositions(); 
 	void setSatelliteRadius(float& size);
 	void setSatelliteDistance(float& altitude);
 	void setSatelliteSpeed(float& speed);
 	void calculateOrbitVelocity(float& altitude);
-
-private:
-	void drawOrbitingSatellite(std::vector<float>& vertices, std::vector<float>& colors);
+	void calculatePath(std::vector<float>& vertices, std::vector<float>& colors, int& pathPoints);
 
 private:
 	float mSatelliteRadius = 0.2f ; // set it to 0.2 for visualization
@@ -28,6 +30,9 @@ private:
 
 	float mOrbitVelocity;
 	float mSatelliteSpeed;
+
+	float mXCoordinate;
+	float mYCoordinate;
 
 	float mEscapeVelocity = 11.2f; // 11.2 Km/s for earth
 	float mAltitude = 6.371f;
