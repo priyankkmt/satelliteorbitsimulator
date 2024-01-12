@@ -13,17 +13,14 @@ EarthSystem::~EarthSystem()
 {
 }
 
-void EarthSystem::drawPlanetSatelliteSystem(std::vector<float>& mVertices, std::vector<float>& mColors)
-{
-	sphere->drawSphere(mVertices, mColors, 0.0f, 0.0f, EARTH_RADIUS, Point3D(0.0, 0.0, 1.0)); // Earth
-	drawOrbitingSatellite(mVertices, mColors); // satellite
-}
-
-void EarthSystem::drawOrbitingSatellite(std::vector<GLfloat>& vertices, std::vector<GLfloat>& colors)
+void EarthSystem::drawOrbitingSatellite(std::vector<float>& vertices, std::vector<float>& colors)
 {
     float theta = static_cast<float>(mSatelliteAngle) * PI / 180.0f;
     float x = mSatelliteDistance * cosf(theta);
     float y = mSatelliteDistance * sinf(theta);
+
+    mXCoordinate = x;
+    mYCoordinate = y;
 
     if (mSatelliteSpeed > 0.0f && mSatelliteSpeed <= 100.0f) {
         if (mSatelliteSpeed < mOrbitVelocity) {
@@ -36,7 +33,7 @@ void EarthSystem::drawOrbitingSatellite(std::vector<GLfloat>& vertices, std::vec
 
     sphere->drawSphere(vertices, colors, x, y, 0.4f, mSatelliteColor);
 
-    mSatelliteAngle += mSatelliteSpeed / 4;
+    mSatelliteAngle += mSatelliteSpeed / 2;
 
     if (mSatelliteDistance <= EARTH_RADIUS) {
         mSatelliteSpeed = 0.0f;
@@ -45,6 +42,19 @@ void EarthSystem::drawOrbitingSatellite(std::vector<GLfloat>& vertices, std::vec
     if (mSatelliteAngle >= 360.0f) {
         mSatelliteAngle -= 360.0f;
     }
+}
+
+void EarthSystem::calculatePath(std::vector<GLfloat>& vertices, std::vector<GLfloat>& colors, int& pathPoints)
+{
+    vertices.push_back(mXCoordinate);
+    vertices.push_back(mYCoordinate);
+    vertices.push_back(0.0);
+
+    colors.push_back(1.0);
+    colors.push_back(0.0);
+    colors.push_back(0.0);
+
+    pathPoints += 3;
 }
 
 void EarthSystem::resetPositions() 
