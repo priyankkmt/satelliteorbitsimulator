@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include <QTimer>
 #include <QComboBox>  
+#include <Windows.h>
+
 #include "EarthSystem.h"
 
 class OpenGLWindow;
@@ -17,21 +19,24 @@ public:
 
 private:
     void setupUi();
+    void applyCustomStyleButton(QPushButton* button);
+    void applyCustomStyleDoubleSpinBox(QDoubleSpinBox* doubleSpinBox);
+    void applyCustomStyleLabel(QLabel* label);
 
 private:          
-    QPushButton* mStartButton;
+    QPushButton* mSimulateButton;
     QPushButton* mStopButton;
     QPushButton* mResetButton;
-
-    QPushButton* mSpeedButton;
-    QPushButton* mAltitudeButton;
-    QPushButton* mSizeButton;
 
     QDoubleSpinBox* mSpeedInput;
     QDoubleSpinBox* mAltitudeInput;
     QDoubleSpinBox* mSizeInput;
 
     QLabel* mLabel;
+    QLabel* mSpeedLabel;
+    QLabel* mAltitudeLabel;
+    QLabel* mSizeLabel;
+    
 
     QTimer* mTimer;
     QWidget* mWidget;
@@ -51,10 +56,7 @@ private:
     QVector<GLfloat> col;
 
 private slots:
-    void startBtn();
+    void simulateBtn();
     void stopBtn();
     void resetBtn();
-    void addVelocity();
-    void addAltitude();
-    void addSize();
 };
