@@ -2,7 +2,7 @@
 #include "Point3D.h"
 #include <vector>
 
-class GEOMETRY_API Sphere : public Point3D
+class GEOMETRY_API Sphere
 {
 public: 
 	Sphere();
