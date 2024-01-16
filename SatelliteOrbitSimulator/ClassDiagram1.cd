@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="OpenGLWindow" Collapsed="true">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQYACIAEACBEAQAAFCRQBOBBIKgQQABgAEMAAIAJAAA=</HashCode>
+      <FileName>header\OpenGLWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QOpenGLWidget" Collapsed="true">
+    <Position X="5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAJAAAAAKCAAyBCAAGJAAAAIAoIKACAiBBAAEAAA=</HashCode>
+      <FileName>C:\Qt\6.6.1\msvc2019_64\include\QtOpenGLWidgets\qopenglwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QOpenGLFunctions" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8h0fiJLNACKdkQRuIQUFZL4iGK8IGKJPExiHn0iB3Kg=</HashCode>
+      <FileName>C:\Qt\6.6.1\msvc2019_64\include\QtGui\qopenglfunctions.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Simulator" Collapsed="true">
+    <Position X="11.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAgAAYIAAAAAAAgDAAAUwCwAQUIgAkAAjAAAABAEA=</HashCode>
+      <FileName>header\Simulator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QMainWindow" Collapsed="true">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoACQgKYCA0hRAgRkKBY4oAAABEAABuBggAgIAMgACA=</HashCode>
+      <FileName>C:\Qt\6.6.1\msvc2019_64\include\QtWidgets\qmainwindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QWidget" Collapsed="true">
+    <Position X="9.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hA6pAGgYqICSoYVAaL8yqpBimu1GwLWO4PBqCgXdwII=</HashCode>
+      <FileName>C:\Qt\6.6.1\msvc2019_64\include\QtWidgets\qwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EarthSystem" Collapsed="true">
+    <Position X="2" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KIBAAoAIDAQABAAAAQABAAAAQAKAAAhBBSEAAAGQABA=</HashCode>
+      <FileName>header\EarthSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
