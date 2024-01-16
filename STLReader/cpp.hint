@@ -1,0 +1,2 @@
+#define STLREADER_API __declspec(dllexport)
+#define STLREADER_API __declspec(dllimport)
